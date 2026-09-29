@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科幻创作头脑风暴 - 世界观设定系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🚀</span>
+                <h1>科幻创作头脑风暴</h1>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-view="dashboard">工作台</button>
+                <button class="nav-btn" data-view="mindmap">思维导图</button>
+                <button class="nav-btn" data-view="gallery">设定图库</button>
+                <button class="nav-btn" data-view="transcripts">转写记录</button>
+                <button class="nav-btn" data-view="summaries">摘要文档</button>
+            </nav>
+            <div class="user-area">
+                <button id="loginBtn" class="btn btn-primary">登录</button>
+            </div>
+        </header>
+
+        <main class="main">
+            <div id="authModal" class="modal hidden">
+                <div class="modal-content">
+                    <h2 id="authTitle">登录</h2>
+                    <form id="authForm">
+                        <input type="email" id="email" placeholder="邮箱" required>
+                        <input type="text" id="name" placeholder="昵称" class="hidden">
+                        <input type="password" id="password" placeholder="密码" required>
+                        <button type="submit" class="btn btn-primary btn-block">登录</button>
+                    </form>
+                    <p id="toggleAuth">没有账号？<a href="#">立即注册</a></p>
+                </div>
+            </div>
+
+            <div id="dashboardView" class="view active">
+                <div class="dashboard-header">
+                    <h2>我的创作项目</h2>
+                    <button id="createDiscussionBtn" class="btn btn-primary">+ 新建头脑风暴</button>
+                </div>
+                <div id="discussionsList" class="discussions-grid">
+                </div>
+            </div>
+
+            <div id="mindmapView" class="view">
+                <div class="view-header">
+                    <h2>世界观思维导图</h2>
+                    <select id="mindmapDiscussion" class="select-input">
+                        <option value="">选择项目...</option>
+                    </select>
+                </div>
+                <div id="mindmapContainer" class="mindmap-container">
+                    <svg id="mindmapSvg"></svg>
+                </div>
+                <div id="nodeDetail" class="node-detail hidden">
+                    <h3 id="nodeTitle"></h3>
+                    <p id="nodeDescription"></p>
+                    <p><strong>设定负责人：</strong><span id="nodeOwner"></span></p>
+                </div>
+            </div>
+
+            <div id="galleryView" class="view">
+                <div class="view-header">
+                    <h2>设定图库</h2>
+                    <select id="galleryDiscussion" class="select-input">
+                        <option value="">选择项目...</option>
+                    </select>
+                    <button id="uploadArtBtn" class="btn btn-primary">+ 上传设定图</button>
+                </div>
+                <div id="galleryGrid" class="gallery-grid">
+                </div>
+            </div>
+
+            <div id="transcriptsView" class="view">
+                <div class="view-header">
+                    <h2>音频转写</h2>
+                    <select id="transcriptDiscussion" class="select-input">
+                        <option value="">选择项目...</option>
+                    </select>
+                    <button id="uploadAudioBtn" class="btn btn-primary">+ 上传音频</button>
+                </div>
+                <div id="transcriptsList" class="transcripts-list">
+                </div>
+                <div id="transcriptDetail" class="transcript-detail hidden">
+                    <h3 id="transcriptTitle"></h3>
+                    <div id="transcriptSegments" class="segments-container">
+                    </div>
+                </div>
+            </div>
+
+            <div id="summariesView" class="view">
+                <div class="view-header">
+                    <h2>摘要文档</h2>
+                    <select id="summaryDiscussion" class="select-input">
+                        <option value="">选择项目...</option>
+                    </select>
+                    <button id="generateSummaryBtn" class="btn btn-primary">✨ 生成AI摘要</button>
+                </div>
+                <div id="summariesList" class="summaries-list">
+                </div>
+                <div id="summaryPreview" class="summary-preview hidden">
+                    <div class="preview-header">
+                        <h3 id="summaryTitle"></h3>
+                        <div>
+                            <button id="downloadSummaryBtn" class="btn btn-secondary">下载 Markdown</button>
+                            <button id="sendEmailBtn" class="btn btn-primary">📧 发送给团队</button>
+                        </div>
+                    </div>
+                    <div id="summaryContent" class="markdown-content">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="uploadModal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="uploadModalTitle">上传文件</h2>
+            <input type="file" id="fileInput" accept="audio/*,image/*">
+            <input type="text" id="artTitle" placeholder="设定图标题" class="hidden">
+            <select id="artCategory" class="hidden">
+                <option value="角色">角色</option>
+                <option value="场景">场景</option>
+                <option value="道具">道具</option>
+                <option value="机械">机械</option>
+                <option value="其他">其他</option>
+            </select>
+            <textarea id="artDescription" placeholder="描述..." class="hidden"></textarea>
+            <div class="modal-actions">
+                <button id="cancelUploadBtn" class="btn btn-secondary">取消</button>
+                <button id="confirmUploadBtn" class="btn btn-primary">上传</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="createDiscussionModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>新建头脑风暴项目</h2>
+            <input type="text" id="discussionTitle" placeholder="项目名称" required>
+            <textarea id="discussionDesc" placeholder="项目描述..."></textarea>
+            <div class="modal-actions">
+                <button id="cancelCreateBtn" class="btn btn-secondary">取消</button>
+                <button id="confirmCreateBtn" class="btn btn-primary">创建</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="emailModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>发送邮件给共创团队</h2>
+            <input type="text" id="emailSubject" placeholder="邮件主题">
+            <textarea id="emailRecipients" placeholder="收件人邮箱（多个用逗号分隔）"></textarea>
+            <div class="modal-actions">
+                <button id="cancelEmailBtn" class="btn btn-secondary">取消</button>
+                <button id="confirmEmailBtn" class="btn btn-primary">发送</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/mindmap.js"></script>
+    <script src="/static/js/gallery.js"></script>
+</body>
+</html>

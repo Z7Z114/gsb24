@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界观设定摘要 - {{ discussion_title }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+        .header h1 {
+            color: #667eea;
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        .header .subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: #764ba2;
+            border-left: 4px solid #667eea;
+            padding-left: 15px;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .content-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 {{ discussion_title }}</h1>
+            <div class="subtitle">世界观设定纲要 · 科幻创作头脑风暴</div>
+        </div>
+
+        <div class="section">
+            <h2>📋 核心设定摘要</h2>
+            <div class="content-box">
+                {{ summary_content[:500] }}{% if summary_content|length > 500 %}...{% endif %}
+            </div>
+        </div>
+
+        {% if tech_principles %}
+        <div class="section">
+            <h2>⚙️ 技术原理</h2>
+            <div class="content-box">
+                {{ tech_principles|safe }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if social_structure %}
+        <div class="section">
+            <h2>🏛️ 社会结构</h2>
+            <div class="content-box">
+                {{ social_structure|safe }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if timeline %}
+        <div class="section">
+            <h2>⏱️ 时间线</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>年份</th>
+                        <th>事件</th>
+                        <th>描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in timeline %}
+                    <tr>
+                        <td><strong>{{ event.year }}</strong></td>
+                        <td>{{ event.event }}</td>
+                        <td>{{ event.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <div class="section">
+            <h2>📎 完整文档</h2>
+            <div class="content-box">
+                <p>完整的 Markdown 格式设定文档已生成，请登录系统查看或下载。</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>此邮件由科幻创作头脑风暴系统自动发送</p>
+            <p>© 2024 Sci-Fi Brainstorm Platform</p>
+        </div>
+    </div>
+</body>
+</html>

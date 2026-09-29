@@ -1,0 +1,7 @@
+# 重型可选依赖：不安装时后端走离线分支（转写/说话人标注不可用）。
+openai-whisper==20231117
+pyannote.audio==3.1.1
+torch==2.1.2
+torchaudio==2.1.2
+numpy==1.26.3
+pydub==0.25.1
